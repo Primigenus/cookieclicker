@@ -58,7 +58,7 @@
 <template name="store">
   <div class="store">
     {{#each building}}
-      <div class="building {{#if purchasable}}canBuy{{/if}}">
+      <div class="building {{#if purchasable}}canBuy{{/if}}" title="CpS: {{cps}}">
         <span>
           {{name}}<br>
           <span class="cost">{{cost}}</span>

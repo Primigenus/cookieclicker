@@ -7,7 +7,6 @@ Meteor.methods({
     const game = Games.findOne({userId: Meteor.userId()});
     if (!game) return;
     Games.update({userId: Meteor.userId()}, {$inc: {
-      // XXX: inc cookies gained when clicked using upgrades
       cookies: game.cookiesPerClick
     }});
   },
@@ -167,6 +166,14 @@ if (Meteor.isClient) {
         return Math.round(ownedBuilding.cost) * factor;
       return Math.round(this.cost) * factor;
     },
+    cps() {
+      const game = Games.findOne({userId: Meteor.userId()});
+      if (!game) return;
+      const ownedBuilding = game.buildings[this.name];
+      if (ownedBuilding)
+        return ownedBuilding.cps;
+      return this.cps;
+    },
     purchasable() {
       const game = Games.findOne({userId: Meteor.userId()});
       if (!game) return false;
@@ -249,9 +256,9 @@ if (Meteor.isServer) {
       Buildings.remove({});
       Buildings.insert({name: "Cursor", cost: 10, cps: 0.1});
       Buildings.insert({name: "Grandma", cost: 20, cps: 2});
-      Buildings.insert({name: "Farm", cost: 500, cps: 5});
-      Buildings.insert({name: "Mine", cost: 10000, cps: 10});
-      Buildings.insert({name: "Factory", cost: 200000, cps: 25});
+      Buildings.insert({name: "Farm", cost: 500, cps: 10});
+      Buildings.insert({name: "Mine", cost: 10000, cps: 50});
+      Buildings.insert({name: "Factory", cost: 200000, cps: 250});
     },
     resetGame() {
       Games.remove({});
