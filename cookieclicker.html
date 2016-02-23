@@ -1,0 +1,78 @@
+<head>
+  <title>cookieclicker</title>
+</head>
+
+<body>
+  <header>
+    {{> loginButtons}}
+  </header>
+  {{#if currentUser}}
+    <div class="game">
+      {{> cookieclicker}}
+    </div>
+  {{/if}}
+</body>
+
+<template name="cookieclicker">
+  <div class="leftColumn">
+    <div class="numCookies">{{numCookies}} cookies</div>
+    <div class="cookiesPerSecond">{{cookiesPerSecond}} per second</div>
+    <div class="cookie"></div>
+    <div class="cursors">
+      {{#each ownedCursor}}{{> cursor}}{{/each}}
+    </div>
+  </div>
+  <div class="centerColumn">
+    {{#each building in ownedBuildings}}
+      <div class="ownedBuilding">
+        <span>{{building.name}}</span>
+        <span>{{building.amount}}</span>
+      </div>
+    {{/each}}
+  </div>
+  <div class="rightColumn">
+    {{> upgrades}}
+    {{> options}}
+    {{> store}}
+  </div>
+</template>
+
+<template name="options">
+  <div class="options">
+    <div class="buyOptions">
+      <div data-type="buy" class="button {{#if buying}}active{{/if}}">Buy</div>
+      <div data-type="sell" class="button {{#unless buying}}active{{/unless}}">Sell</div>
+    </div>
+    <div class="amountOptions">
+      <div class="button {{#if amount1}}active{{/if}}" data-amount="1">1</div>
+      <div class="button {{#if amount10}}active{{/if}}" data-amount="10">10</div>
+      <div class="button {{#if amount100}}active{{/if}}" data-amount="100">100</div>
+    </div>
+  </div>
+</template>
+
+<template name="cursor">
+  <div class="cursor"></div>
+</template>
+
+<template name="store">
+  <div class="store">
+    {{#each building}}
+      <div class="building {{#if purchasable}}canBuy{{/if}}">
+        <span>
+          {{name}}<br>
+          <span class="cost">{{cost}}</span>
+        </span>
+        <span>{{numOwned}}</span>
+      </div>
+    {{/each}}
+  </div>
+</template>
+
+<template name="upgrades">
+  <div class="upgrades">
+    {{#each availableUpgrade}}
+    <div class="upgrade {{#if canBuy}}canBuy{{/if}}" title="Cost: {{cost}}">{{name}}</div>
+    {{/each}}
+  </div>
+</template>
